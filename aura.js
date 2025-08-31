@@ -549,7 +549,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Redirect to index.html after a short delay
         setTimeout(() => {
-            window.location.href = 'http://127.0.0.1:5501/index%20.html';
+            window.location.href = '/index.html';
         }, 1000);
     }
     

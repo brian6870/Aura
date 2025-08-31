@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Redirect to Aura.html after successful login
         setTimeout(() => {
             hideLoading();
-            window.location.href = 'http://127.0.0.1:5501/Aura.html';
+            window.location.href = '/Aura.html';
         }, 1500);
     };
     
