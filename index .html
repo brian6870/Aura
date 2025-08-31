@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Aura</title>
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- IntaSend SDK -->
+    <script src="https://unpkg.com/intasend-inlinejs-sdk@4.0.7/build/intasend-inline.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="loginpage.css">
+    <script src="loginpage.js"></script>
+    
+</head>
+<body>
+    <div class="card rounded-2xl p-8 w-full max-w-md shadow-xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white text-2xl font-bold mb-4 pulse">
+                A
+            </div>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Welcome to Aura</h1>
+            <p class="text-gray-600">Your AI-powered flashcard generator</p>
+        </div>
+        
+        <!-- Login Section -->
+        <div class="mb-6">
+            <div id="googleLoginContainer"></div>
+        </div>
+        
+        <!-- Donation Section -->
+        <div class="text-center border-t border-gray-200 pt-6">
+            <p class="text-sm text-gray-600 mb-4">
+                Aura is completely free to use. If you find it helpful, consider supporting its development.
+            </p>
+            
+            <!-- Donation Options -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Select donation amount</label>
+                <div class="grid grid-cols-3 gap-2 mb-4">
+                    <button class="amount-option py-2 px-3 border border-gray-300 rounded-lg font-medium" data-amount="5">$5</button>
+                    <button class="amount-option py-2 px-3 border border-gray-300 rounded-lg font-medium selected" data-amount="10">$10</button>
+                    <button class="amount-option py-2 px-3 border border-gray-300 rounded-lg font-medium" data-amount="20">$20</button>
+                </div>
+                
+                <!-- IntaSend Payment Button -->
+                <button 
+                    id="donateButton" 
+                    class="intaSendPayButton" 
+                    data-amount="10" 
+                    data-currency="USD"
+                >
+                    Support Aura Development
+                </button>
+            </div>
+        </div>
+        
+        <!-- Loading Indicator -->
+        <div id="loading" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white rounded-xl p-6 flex items-center gap-3">
+                <div class="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-gray-700" id="loadingText">Processing...</p>
+            </div>
+        </div>
+        
+        <!-- Error Message -->
+        <div id="errorMessage" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg shadow-lg max-w-md z-50">
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                </svg>
+                <span id="errorText"></span>
+            </div>
+        </div>
+        
+        <!-- Payment Success Modal -->
+        <div id="paymentSuccess" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white rounded-2xl p-6 w-full max-w-md mx-4 text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Thank You!</h3>
+                <p class="text-gray-600 mb-4">Your donation has been successfully processed.</p>
+                <button id="closeSuccess" class="w-full bg-blue-600 text-white font-medium py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                    Continue to Aura
+                </button>
+            </div>
+        </div>
+    </div>
+
+   
+</body>
+</html>
