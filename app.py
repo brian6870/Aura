@@ -2,7 +2,7 @@ import os
 import json
 import PyPDF2
 import io
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, send_from_directory
 from flask_cors import CORS
 from dotenv import load_dotenv
 import requests
@@ -18,7 +18,7 @@ import json
 load_dotenv()
 
 # Initialize Flask app
-app = Flask(__name__)
+app = Flask(__name__, static_folder='.', static_url_path='')
 CORS(app)  # Enable CORS for all routes
 
 # Configuration
@@ -198,9 +198,21 @@ Return ONLY the JSON array:"""
         print(f"Groq API request failed: {e}")
         return create_fallback_flashcards(notes)
 
-# Routes
+# Serve index.html as the root page
 @app.route('/')
-def index():
+def serve_index():
+    return send_from_directory('.', 'index.html')
+
+# Serve other HTML files
+@app.route('/<path:path>')
+def serve_static(path):
+    if path.endswith('.html'):
+        return send_from_directory('.', path)
+    return send_from_directory('.', path)
+
+# Routes
+@app.route('/api')
+def api_index():
     return jsonify({
         "message": "Aura Flashcard Generator API",
         "status": "running",
@@ -208,7 +220,7 @@ def index():
         "ai_service": "available (Groq - Llama 3 70B)" if groq_client else "disabled"
     })
 
-@app.route('/verify-token', methods=['POST'])
+@app.route('/api/verify-token', methods=['POST'])
 def verify_token():
     data = request.get_json()
     if not data:
@@ -235,7 +247,7 @@ def verify_token():
     except Exception as e:
         return jsonify({'error': f'Token verification failed: {str(e)}'}), 401
 
-@app.route('/extract-text', methods=['POST'])
+@app.route('/api/extract-text', methods=['POST'])
 @token_required
 def extract_text():
     if 'pdf' not in request.files:
@@ -254,7 +266,7 @@ def extract_text():
     else:
         return jsonify({'error': 'Invalid file type. Please upload a PDF'}), 400
 
-@app.route('/generate', methods=['POST'])
+@app.route('/api/generate', methods=['POST'])
 @token_required
 def generate_flashcards():
     data = request.get_json()
@@ -269,7 +281,7 @@ def generate_flashcards():
     flashcards = generate_flashcards_with_ai(notes)
     return jsonify({'flashcards': flashcards})
 
-@app.route('/save', methods=['POST'])
+@app.route('/api/save', methods=['POST'])
 @token_required
 def save_flashcards():
     if not supabase:
@@ -304,7 +316,7 @@ def save_flashcards():
         print(f"Error saving flashcards: {e}")
         return jsonify({'error': 'Failed to save flashcards'}), 500
 
-@app.route('/flashcards', methods=['GET'])
+@app.route('/api/flashcards', methods=['GET'])
 @token_required
 def get_flashcards():
     if not supabase:
@@ -323,7 +335,7 @@ def get_flashcards():
         print(f"Error retrieving flashcards: {e}")
         return jsonify({'error': 'Failed to retrieve flashcards'}), 500
 
-@app.route('/export', methods=['GET'])
+@app.route('/api/export', methods=['GET'])
 @token_required
 def export_flashcards():
     if not supabase:
@@ -349,7 +361,7 @@ def export_flashcards():
         print(f"Error exporting flashcards: {e}")
         return jsonify({'error': 'Failed to export flashcards'}), 500
 
-@app.route('/health', methods=['GET'])
+@app.route('/api/health', methods=['GET'])
 def health_check():
     return jsonify({
         'status': 'healthy', 
@@ -361,4 +373,4 @@ def health_check():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     print(f"Starting server on port {port}...")
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=False)

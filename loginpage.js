@@ -1,5 +1,3 @@
-// donation.js
-
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize IntaSend
@@ -23,6 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let selectedAmount = 10; // Default amount
     let isLoggedIn = false; // Track login state
     
+    // Get current domain for redirects
+    const currentDomain = window.location.origin;
+    
     // Handle Google Sign-In
     window.handleGoogleSignIn = function(response) {
         showLoading('Logging you in...');
@@ -35,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Redirect to Aura.html after successful login
         setTimeout(() => {
             hideLoading();
-            window.location.href = '/Aura.html';
+            window.location.href = `${currentDomain}/Aura.html`;
         }, 1500);
     };
     
@@ -117,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // If user is logged in, redirect to Aura page
             if (isLoggedIn) {
-                window.location.href = 'http://127.0.0.1:5501/Aura.html';
+                window.location.href = `${currentDomain}/Aura.html`;
             }
         });
     }

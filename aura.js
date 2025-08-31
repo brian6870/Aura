@@ -1,9 +1,7 @@
-// aura-app.js
-
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // API base URL - change this to your Flask server address
-    const API_BASE_URL = 'http://localhost:5000';
+    // API base URL - use current domain for API calls
+    const API_BASE_URL = window.location.origin + '/api';
 
     // DOM elements
     const notesInput = document.getElementById('notes-input');
@@ -94,21 +92,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 userInfo.innerHTML = `<i class="fas fa-user-circle"></i><span>Not logged in</span>`;
                 loginBtn.style.display = 'flex';
                 logoutBtn.style.display = 'none';
+                // Redirect to login page if not authenticated
+                window.location.href = window.location.origin;
             }
         } else {
             currentUser = null;
             userInfo.innerHTML = `<i class="fas fa-user-circle"></i><span>Not logged in</span>`;
             loginBtn.style.display = 'flex';
             logoutBtn.style.display = 'none';
+            // Redirect to login page if not authenticated
+            window.location.href = window.location.origin;
         }
     }
     
     // Initialize Google Sign-In
     function initializeGoogleSignIn() {
-        google.accounts.id.initialize({
-            client_id: 'YOUR_GOOGLE_CLIENT_ID', // Replace with your actual Google Client ID
-            callback: handleGoogleSignIn
-        });
+        if (typeof google !== 'undefined') {
+            google.accounts.id.initialize({
+                client_id: '443413171725-tn4qbjbdojgpsu74u24aab62cark5pb2.apps.googleusercontent.com',
+                callback: handleGoogleSignIn
+            });
+        }
     }
     
     // Handle Google Sign-In
@@ -446,8 +450,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showNotification('Flashcards exported successfully!', 'success');
     }
     
-    
-                // Clear all flashcards 
+    // Clear all flashcards 
     function clearAllFlashcards() {
         if (currentFlashcards.length === 0) {
             showNotification('No flashcards to clear!', 'info');
@@ -536,20 +539,22 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Login function
     function login() {
-        google.accounts.id.prompt();
+        if (typeof google !== 'undefined') {
+            google.accounts.id.prompt();
+        } else {
+            showNotification('Google Sign-In not available. Please refresh the page.', 'error');
+        }
     }
     
-    
-            // Modified logout function
+    // Modified logout function
     function logout() {
         removeGoogleToken();
         currentUser = null;
-        checkAuthStatus();
         showNotification('You have been logged out.', 'info');
         
         // Redirect to index.html after a short delay
         setTimeout(() => {
-            window.location.href = '/index.html';
+            window.location.href = window.location.origin;
         }, 1000);
     }
     
