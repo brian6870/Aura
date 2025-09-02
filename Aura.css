@@ -534,6 +534,7 @@ footer {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     width: 250px; /* Increased width to prevent overflow */
     z-index: 100;
+    overflow: hidden;
     display: none;
     color: #333; /* Added text color for better contrast */
 }
@@ -546,6 +547,7 @@ footer {
     padding: 12px 15px;
     cursor: pointer;
     display: flex;
+    overflow: hidden;
     align-items: center;
     gap: 10px;
     transition: background 0.2s;
