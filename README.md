@@ -5,6 +5,7 @@ URGENT UODATE :If you you dont see the signin with google option please refresh 
 [http://aura-flashcardgenerator-3579.up.railway.app](http://aura-flashcardgenerator-3579.up.railway.app)
 
 ---
+For android users you can download the apk version of Aura
 
 ## Overview
 
