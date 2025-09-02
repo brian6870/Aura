@@ -1,5 +1,5 @@
 # Aura - AI Flashcard Generator
-URGENT UODATE :If you you dont see the signin with google option please refresh the page to load the feature also
+URGENT UPDATE :If you you dont see the signin with google option please refresh the page to load the feature also
 For android users you can download the apk version of Aura
 
 **Live App:**  
