@@ -2,8 +2,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize IntaSend
     const intaSend = new window.IntaSend({
-        publicAPIKey: "ISPubKey_test_91ffc81a-8ac4-419e-8008-7091caa8d73f",
-        live: false // Set to true when going live
+        publicAPIKey: "ISPubKey_live_cef05983-151c-4b2d-9987-b86bb157cb81",
+        live: true // Set to true when going live
     });
     
     // DOM Elements
